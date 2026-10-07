@@ -1,0 +1,204 @@
+:root {
+  --bg: #0f0a1e;
+  --bg2: #1a1030;
+  --panel: rgba(40, 26, 74, 0.6);
+  --accent: #c9a227;
+  --accent2: #8a6bd6;
+  --text: #ece7ff;
+  --muted: #a99fce;
+  --user: #3a2a6a;
+  --assistant: #241a44;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(1200px 800px at 70% -10%, #2a1a52 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+}
+
+#app {
+  max-width: 860px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+#topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  flex-wrap: wrap;
+}
+.brand { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+.config { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.config input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #4a3a7a;
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+#api-key { width: 240px; }
+#model-id { width: 180px; }
+button {
+  background: linear-gradient(135deg, var(--accent), #e6c34a);
+  color: #2a1a0a;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#warn {
+  font-size: 12px;
+  color: #ffd27a;
+  background: rgba(255, 180, 60, 0.08);
+  border: 1px solid rgba(255, 180, 60, 0.25);
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 4px 16px;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.bubble.user { align-self: flex-end; background: var(--user); border-bottom-right-radius: 4px; }
+.bubble.assistant { align-self: flex-start; background: var(--assistant); border-bottom-left-radius: 4px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid #4a3a7a;
+  border-radius: 14px;
+  padding: 14px 16px;
+  backdrop-filter: blur(6px);
+}
+.card-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--accent); }
+.card-sub, .card-hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+.q-list { margin-top: 8px; display: flex; flex-direction: column; gap: 12px; }
+.q-item { display: flex; flex-direction: column; gap: 6px; }
+.q-text { line-height: 1.6; }
+.q-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.q-chip {
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  border: 1px solid var(--accent2);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.q-chip:hover { border-color: var(--accent); }
+.q-chip.active {
+  background: linear-gradient(135deg, var(--accent), #e6c34a);
+  color: #2a1a0a;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.cards-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.tarot-card {
+  width: 128px;
+  padding: 14px 10px;
+  border-radius: 12px;
+  background: linear-gradient(160deg, #2b1e57, #17102f);
+  border: 1px solid var(--accent2);
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  animation: flip 0.6s ease both;
+  transform-style: preserve-3d;
+}
+.tarot-card.reversed .glyph { transform: rotate(180deg); }
+.tarot-card .glyph { font-size: 40px; margin-bottom: 6px; }
+.tarot-card .cn { font-weight: 700; }
+.tarot-card .pos { font-size: 12px; color: var(--accent); margin: 2px 0 6px; }
+.tarot-card .mean { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+@keyframes flip {
+  from { opacity: 0; transform: rotateY(90deg) translateY(8px); }
+  to { opacity: 1; transform: rotateY(0) translateY(0); }
+}
+
+.reading-line { margin: 6px 0; line-height: 1.7; }
+.rl-name { color: var(--accent); font-weight: 700; margin-right: 8px; }
+.reading-overall {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #4a3a7a;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.card-mint {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-width: 2px;
+}
+.card-mint .mint-badge {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 12px; padding: 2px 10px; border-radius: 999px;
+  background: rgba(0,0,0,0.35);
+}
+.mint-glyph { font-size: 46px; }
+.mint-name { font-size: 20px; font-weight: 800; margin: 4px 0; }
+.mint-motif { color: var(--muted); font-size: 13px; }
+.mint-meta { display: flex; justify-content: center; gap: 18px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.mint-foot { margin-top: 10px; font-size: 13px; color: var(--accent); }
+.rarity-common { border-color: #8a8a8a; }
+.rarity-rare { border-color: #4aa3ff; box-shadow: 0 0 24px rgba(74,163,255,0.25); }
+.rarity-epic { border-color: #b45bff; box-shadow: 0 0 28px rgba(180,91,255,0.3); }
+.rarity-legendary { border-color: var(--accent); box-shadow: 0 0 34px rgba(230,195,74,0.4); }
+
+#composer {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0 6px;
+}
+#chat-input {
+  flex: 1;
+  resize: none;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid #4a3a7a;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: inherit;
+}
+#send-btn { padding: 0 22px; }
+#status { min-height: 18px; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+
+.card-error {
+  border-color: #ff6b6b;
+  color: #ffd0d0;
+  background: rgba(255, 80, 80, 0.1);
+  white-space: pre-wrap;
+  word-break: break-word;
+}

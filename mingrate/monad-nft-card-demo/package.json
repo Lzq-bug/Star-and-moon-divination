@@ -1,0 +1,36 @@
+{
+  "name": "monad-nft-card-demo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.app.json && vite build",
+    "preview": "vite preview",
+    "compile": "hardhat compile",
+    "deploy:testnet": "hardhat run scripts/deploy.cjs --network monadTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.cjs --network monadMainnet",
+    "test": "hardhat test",
+    "withdraw:testnet": "hardhat run scripts/withdraw.cjs --network monadTestnet",
+    "withdraw:mainnet": "hardhat run scripts/withdraw.cjs --network monadMainnet"
+  },
+  "dependencies": {
+    "ethers": "^6.14.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "6.1.2",
+    "@openzeppelin/contracts": "5.1.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "dotenv": "16.4.7",
+    "hardhat": "2.28.6",
+    "typescript": "5.7.2",
+    "vite": "5.4.11"
+  },
+  "engines": {
+    "node": ">=20 <23"
+  }
+}

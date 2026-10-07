@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>星语塔罗 · Tarot Agent</title>
+  </head>
+  <body>
+    <div id="app">
+      <header id="topbar">
+        <div class="brand">🔮 星语塔罗</div>
+        <div class="config">
+          <input id="api-key" type="password" placeholder="API Key" autocomplete="off" />
+          <input id="base-url" type="text" placeholder="API 地址" />
+          <input id="model-id" type="text" placeholder="模型名称" />
+          <button id="save-key">保存</button>
+        </div>
+      </header>
+      <div id="warn">⚠ 仅供本地体验:API Key 直接在浏览器发起请求,请勿公开部署。</div>
+      <main id="messages">
+        <div class="panel card-intro">
+          <div class="card-title">欢迎来到星语塔罗</div>
+          <div>填入你的 API Key(API 地址与模型名称已预填默认值,可按需修改),然后在下方说出你想占卜的事(例如「帮我看看最近的事业运」),星语会先了解你,再为你抽牌、解读,并赠予一枚纪念数字藏品。</div>
+        </div>
+      </main>
+      <footer id="composer">
+        <textarea id="chat-input" rows="1" placeholder="说出你的困惑,Enter 发送 / Shift+Enter 换行"></textarea>
+        <button id="send-btn">发送</button>
+      </footer>
+      <div id="status"></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

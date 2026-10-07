@@ -1,0 +1,24 @@
+{
+  "name": "zhanbo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "0.82.0",
+    "@earendil-works/pi-ai": "0.82.0",
+    "bootstrap": "^5.3.8",
+    "ethers": "6.13.4",
+    "html2canvas": "^1.4.1",
+    "partial-json": "0.1.7",
+    "typebox": "1.1.38"
+  }
+}

@@ -1,0 +1,184 @@
+/* ===== 语音按钮 ===== */
+.voice-btn-wrapper {
+  position: fixed; bottom: 100px; right: 20px; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  pointer-events: none;
+}
+.voice-btn-wrapper > * { pointer-events: auto; }
+
+.voice-btn {
+  width: 52px; height: 52px; border-radius: 50%; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .3s ease;
+  position: relative;
+  background: rgba(108,60,248,.25);
+  border: 1px solid rgba(198,129,241,.25);
+  backdrop-filter: blur(8px);
+}
+.voice-btn-icon { font-size: 20px; line-height: 1; }
+
+/* 隐藏态 */
+.voice-hidden { opacity: 0; transform: scale(.5); pointer-events: none !important; }
+
+/* 待机态 */
+.voice-idle { opacity: .5; transform: scale(.85); }
+.voice-idle:hover { opacity: .8; transform: scale(.95); }
+
+/* 可用态（金色呼吸） */
+.voice-available {
+  opacity: 1; transform: scale(1);
+  border-color: var(--accent);
+  animation: voicePulse 1.8s ease-in-out infinite;
+  background: rgba(108,60,248,.35);
+}
+.voice-available:hover { transform: scale(1.1); background: rgba(108,60,248,.45); }
+
+/* 收音态 */
+.voice-listening {
+  opacity: 1; transform: scale(1.12);
+  border-color: #E94560; background: rgba(233,69,96,.25);
+  animation: voiceListen  .6s ease-in-out infinite alternate;
+}
+
+/* 朗读态 */
+.voice-speaking {
+  opacity: 1; transform: scale(1);
+  border-color: #4ECDC4; background: rgba(78,205,196,.2);
+  animation: voiceSpeaking 1.2s ease-in-out infinite;
+}
+
+/* 波形动画（收音时显示） */
+.voice-wave {
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+  opacity: 0; transition: all .3s;
+}
+.voice-wave.active {
+  width: 40px; height: 40px; opacity: .3;
+  background: transparent; border: 2px solid #E94560;
+  animation: waveExpand .8s ease-out infinite;
+}
+.voice-wave.speaking {
+  width: 56px; height: 56px; opacity: .2;
+  border: 2px solid #4ECDC4; background: transparent;
+  animation: waveExpand 1.2s ease-out infinite;
+}
+
+/* 提示文字 */
+.voice-tooltip {
+  font-size: 11px; white-space: nowrap; color: rgba(245,229,255,.6);
+  padding: 4px 10px; border-radius: 10px;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  opacity: 0; transform: translateY(6px); transition: all .3s;
+  pointer-events: none; letter-spacing: .04em;
+}
+.voice-tooltip.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes voicePulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(246,201,14,.15); }
+  50% { box-shadow: 0 0 20px rgba(246,201,14,.3), 0 0 40px rgba(246,201,14,.1); }
+}
+@keyframes voiceListen {
+  0% { box-shadow: 0 0 6px rgba(233,69,96,.2); }
+  100% { box-shadow: 0 0 24px rgba(233,69,96,.4); }
+}
+@keyframes voiceSpeaking {
+  0%, 100% { box-shadow: 0 0 8px rgba(78,205,196,.2); }
+  50% { box-shadow: 0 0 20px rgba(78,205,196,.35); }
+}
+@keyframes waveExpand {
+  0% { transform: translateX(-50%) scale(.5); opacity: .4; }
+  100% { transform: translateX(-50%) scale(1.5); opacity: 0; }
+}
+
+@media (max-width: 800px) {
+  .voice-btn-wrapper { bottom: 80px; right: 14px; }
+  .voice-btn { width: 44px; height: 44px; }
+  .voice-btn-icon { font-size: 17px; }
+}
+
+/* ===== 星灵语音在场界面（voice-stage.ts） ===== */
+.vs-ready{position:relative}
+.vs-stage-on .vs-reading-bg{filter:blur(14px) saturate(.7);opacity:.22;transform:scale(1.05);pointer-events:none}
+
+/* 星尘 canvas */
+#vs-stars{position:fixed;inset:0;z-index:90;pointer-events:none}
+
+/* 前景：语音在场 */
+.vs-stage{position:fixed;inset:0;z-index:91;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,4vh,44px);opacity:0;pointer-events:none;transition:opacity .7s ease}
+.vs-stage-on .vs-stage{opacity:1;pointer-events:auto}
+
+/* 状态标签 */
+.vs-state-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--text-secondary,#8a7fa6);display:flex;align-items:center;gap:9px;transition:color .4s;z-index:2;font-family:'Noto Sans SC',system-ui,sans-serif}
+.vs-dot{width:6px;height:6px;border-radius:50%;background:var(--text-secondary,#8a7fa6);box-shadow:0 0 10px currentColor;transition:background .4s,box-shadow .4s}
+[data-vs-state=listening] .vs-state-tag{color:#cdd6ff}
+[data-vs-state=thinking] .vs-state-tag{color:#fbf1ff}
+[data-vs-state=speaking] .vs-state-tag{color:#e0bd86}
+[data-vs-state=listening] .vs-dot{background:#cdd6ff}
+[data-vs-state=thinking] .vs-dot{background:#fbf1ff;animation:vs-blink 1s infinite}
+[data-vs-state=speaking] .vs-dot{background:#e0bd86}
+@keyframes vs-blink{50%{opacity:.25}}
+
+/* 星灵 */
+.vs-spirit{position:relative;width:min(58vw,300px);aspect-ratio:1;cursor:pointer;display:grid;place-items:center;transition:transform .25s cubic-bezier(.2,.9,.3,1.4);z-index:1}
+.vs-spirit:active{transform:scale(.96)}
+.vs-spirit canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* 外环 */
+.vs-ring{position:absolute;inset:-7%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 60%,#cdd6ff 72%,transparent 84% 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 2px));opacity:.5;animation:vs-spin 9s linear infinite;transition:opacity .5s}
+[data-vs-state=thinking] .vs-ring{animation-duration:1.4s;opacity:.85}
+[data-vs-state=speaking] .vs-ring{background:conic-gradient(from 0deg,transparent 0 55%,#e0bd86 70%,transparent 82% 100%)}
+@keyframes vs-spin{to{transform:rotate(360deg)}}
+
+/* 耳朵弧光 */
+.vs-ear{position:absolute;top:50%;width:18%;height:46%;border:2px solid #cdd6ff;border-radius:50%;opacity:0;transform:translateY(-50%) scale(.6);transition:opacity .5s,transform .5s;filter:blur(.4px)}
+.vs-ear-l{left:-12%;border-right-color:transparent}
+.vs-ear-r{right:-12%;border-left-color:transparent}
+[data-vs-state=listening] .vs-ear{opacity:.7;transform:translateY(-50%) scale(1)}
+
+/* 口型 */
+.vs-mouth{position:absolute;bottom:24%;left:50%;width:34%;height:14%;transform:translateX(-50%) scaleY(var(--vs-mouth,.2));transform-origin:center;border-bottom:3px solid #e0bd86;border-radius:0 0 50% 50%;opacity:0;transition:opacity .4s;box-shadow:0 4px 14px #e0bd86}
+[data-vs-state=speaking] .vs-mouth{opacity:.9}
+
+/* 流式文字 */
+.vs-line{min-height:2.4em;max-width:min(86vw,640px);text-align:center;padding:0 6vw;font-family:Cinzel,'Noto Serif SC',serif;font-weight:500;line-height:1.35;font-size:clamp(22px,4.4vw,40px);letter-spacing:.02em;color:#fbf1ff;text-shadow:0 0 26px #ffffff14;z-index:1}
+[data-vs-state=speaking] .vs-line{color:#f3ead6}
+.vs-caret{display:inline-block;width:2px;height:.9em;background:currentColor;margin-left:3px;vertical-align:-.08em;animation:vs-blink-caret 1s steps(1) infinite}
+@keyframes vs-blink-caret{50%{opacity:0}}
+.vs-hint{font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:300;font-size:12.5px;color:var(--text-secondary,#8a7fa6);letter-spacing:.04em;margin-top:-10px;z-index:1}
+
+/* 控制栏 */
+.vs-controls{position:fixed;left:0;right:0;bottom:max(26px,env(safe-area-inset-bottom));z-index:92;display:flex;flex-direction:column;align-items:center;gap:16px;opacity:0;pointer-events:none;transition:opacity .6s .1s}
+.vs-stage-on .vs-controls{opacity:1;pointer-events:auto}
+/* 补丁4：VAD 连续模式隐藏"按住说话"长条 */
+.vs-stage-on .vs-hold{display:none}
+/* 补丁5：星灵全屏时隐藏右下角朗读浮球 */
+.vs-stage-on .voice-btn-wrapper{display:none!important}
+.vs-hold{width:min(74vw,360px);height:50px;border-radius:26px;position:relative;overflow:hidden;border:1px solid #ffffff1f;background:#ffffff08;color:var(--text-primary,#fbf1ff);font-family:'Noto Sans SC',system-ui,sans-serif;font-size:13px;letter-spacing:.22em;cursor:pointer;display:grid;place-items:center;transition:transform .15s,border-color .3s,background .3s;user-select:none}
+.vs-hold:hover{border-color:#ffffff3a;background:#ffffff0d}
+.vs-hold:active{transform:scale(.98)}
+.vs-hold-fill{position:absolute;inset:0;width:0%;background:linear-gradient(90deg,#ffffff00,#cdd6ff55,#ffffff00);transition:width .08s}
+.vs-hold.vs-on{border-color:#cdd6ff}
+.vs-row{display:flex;align-items:center;gap:22px}
+.vs-toggle{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-secondary,#8a7fa6);letter-spacing:.08em;cursor:pointer;transition:color .3s;font-family:'Noto Sans SC',system-ui,sans-serif}
+.vs-toggle:hover{color:var(--text-primary,#fbf1ff)}
+.vs-sw{width:38px;height:21px;border-radius:11px;background:#ffffff14;position:relative;transition:background .3s}
+.vs-sw::after{content:"";position:absolute;top:2.5px;left:2.5px;width:16px;height:16px;border-radius:50%;background:var(--text-primary,#fbf1ff);transition:transform .3s,background .3s}
+.vs-toggle.vs-on .vs-sw{background:#e0bd8655}
+.vs-toggle.vs-on .vs-sw::after{transform:translateX(17px);background:#e0bd86}
+.vs-mic-btn{font-size:12px;color:var(--text-secondary,#8a7fa6);border:1px solid #ffffff1a;padding:7px 13px;border-radius:20px;cursor:pointer;letter-spacing:.06em;transition:all .3s;font-family:'Noto Sans SC',system-ui,sans-serif}
+.vs-mic-btn:hover{color:var(--text-primary,#fbf1ff);border-color:#ffffff3a}
+.vs-mic-btn.vs-live{color:#e0bd86;border-color:#e0bd8666}
+
+/* 关闭按钮 */
+.vs-close{position:fixed;top:22px;right:24px;z-index:93;width:40px;height:40px;border-radius:50%;border:1px solid #ffffff1f;background:#ffffff08;color:var(--text-secondary,#8a7fa6);cursor:pointer;font-size:16px;display:grid;place-items:center;opacity:0;pointer-events:none;transition:all .4s;font-family:inherit}
+.vs-stage-on .vs-close{opacity:1;pointer-events:auto}
+.vs-close:hover{color:var(--text-primary,#fbf1ff);transform:rotate(90deg)}
+
+/* ===== 对话流 ===== */
+.vs-flow{position:fixed;top:10vh;left:0;right:0;z-index:89;max-height:40vh;overflow-y:auto;padding:0 6vw 20px;display:flex;flex-direction:column;gap:6px;pointer-events:none;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.vs-flow-entry{font-family:'Noto Sans SC',system-ui,sans-serif;font-weight:300;font-size:13px;line-height:1.5;letter-spacing:.04em;opacity:.35;transition:opacity .4s;max-width:70%;padding:2px 0}
+.vs-flow-star{align-self:flex-start;color:var(--dust,#fbf1ff);text-align:left}
+.vs-flow-user{align-self:flex-end;color:#cdd6ff;text-align:right}
+.vs-flow-entry:last-child{opacity:.55}
+.vs-flow-settling{font-family:Cinzel,'Noto Serif SC',serif;font-size:clamp(22px,4.4vw,40px);color:var(--dust,#fbf1ff);text-shadow:0 0 26px #ffffff14;opacity:1;transition:all .6s cubic-bezier(.2,.8,.2,1)}

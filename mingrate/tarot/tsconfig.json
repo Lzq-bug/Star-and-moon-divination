@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@earendil-works/pi-agent-core/types": ["../pi/packages/agent/src/types.ts"],
+      "@earendil-works/pi-agent-core": ["../pi/packages/agent/src/agent.ts"],
+      "@earendil-works/pi-ai/providers/anthropic": ["../pi/packages/ai/src/providers/anthropic.ts"],
+      "@earendil-works/pi-ai": ["../pi/packages/ai/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

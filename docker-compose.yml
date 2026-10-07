@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "3349:80"
+    environment:
+      - VITE_NETWORK=testnet
+    depends_on:
+      - tts-proxy
+    restart: unless-stopped
+
+  tts-proxy:
+    image: node:22-alpine
+    working_dir: /app
+    command: node tts-proxy.cjs
+    volumes:
+      - ./tts-proxy.cjs:/app/tts-proxy.cjs
+    restart: unless-stopped
