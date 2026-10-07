@@ -6,12 +6,12 @@
 
 ## ✨ 功能特性
 
-- **AI 占卜师「星语」**:由智谱 GLM 驱动的对话式 Agent,主动问候、共情追问、自然引导,全程有仪式感的中文占卜体验。
+- **AI 占卜师「星语」**:由大模型驱动的对话式 Agent,主动问候、共情追问、自然引导,全程有仪式感的中文占卜体验。
 - **完整占卜流程**:开场破冰 → 个性化问卷(所在地区 / 天气等) → 水晶球自述 → 78 张塔罗牌扇形盲选 3 张 → 逐张解读(结合牌义、正逆位与你的自述) → 综合指引与贴合当地天气的散心方案 → 生成专属纪念卡。
 - **防幻觉一致性检查**:Agent 内置一致性规则,发现前后矛盾会先温和澄清,不强行自洽、不编造事实。
-- **今日星象**:选择星座,由 GLM 生成当日运势卡片,每个星座每天缓存一次。
+- **今日星象**:选择星座,由agent生成当日运势卡片,每个星座每天缓存一次。
 - **能量档案**:自动归档历史星象卡与塔罗纪念卡,随时回看。
-- **语音交互**(可选):语音输入走智谱 GLM-ASR,回复播报优先浏览器语音合成,本地代理一键启动。
+- **语音交互**(可选):语音输入走语言模型,回复播报优先浏览器语音合成,本地代理一键启动。
 - **纪念卡导出**:占卜结束生成专属纪念藏品卡,支持导出图片保存。
 
 ## 🧰 技术栈
@@ -19,7 +19,7 @@
 | 层级 | 技术 |
 | --- | --- |
 | 前端 | Vite 6 · TypeScript 5.7 · Bootstrap 5 · 原生 CSS 动效 |
-| AI | 智谱 GLM(OpenAI 兼容端点 `open.bigmodel.cn`) · pi-agent-core / pi-ai Agent 框架 |
+| AI | (OpenAI 兼容端点 `open.bigmodel.cn`) · pi-agent-core / pi-ai Agent 框架 |
 | 语音 | GLM-ASR 语音识别(经本地 Node 代理) · 浏览器 SpeechSynthesis 播报 |
 | 部署 | Docker 多阶段构建 · Nginx |
 
@@ -29,7 +29,7 @@
 
 - Node.js ≥ 18(推荐 22)
 - npm 或 pnpm
-- 一个智谱开放平台 API Key([免费注册获取](https://open.bigmodel.cn))
+-  API Key
 
 ### 1. 安装依赖
 
@@ -42,7 +42,7 @@ npm install
 复制 `.env.example` 为 `.env.local`,填入你的 Key:
 
 ```bash
-# 智谱 API Key(对话 + 语音识别)
+#  API Key(对话 + 语音识别)
 ZHIPU_KEY=your-zhipu-api-key
 
 # 前端预填的默认 Key(可选,浏览器未保存 Key 时生效)
@@ -81,13 +81,13 @@ Vite 开发服务器会自动把 `/api/asr`、`/api/tts`、`/health` 转发到�
 
 | 环境变量 | 说明 |
 | --- | --- |
-| `ZHIPU_KEY` | 智谱 API Key,语音代理(`tts-proxy.cjs`)的无头回退 Key |
+| `ZHIPU_KEY` | API Key,语音代理(`tts-proxy.cjs`)的无头回退 Key |
 | `VITE_ZHIPU_API_KEY` | 前端预填的默认 Key(可选) |
 | `VITE_DEEPSEEK_TARGET` | `/__api` 代理目标,默认智谱 OpenAI 兼容端点 |
 | `ZHIPU_ASR_MODEL` | 语音识别模型,默认 `glm-asr-2512` |
-| `ALIYUN_KEY` / `ALIYUN_WS_ID` | 阿里云百炼 Key 与工作空间 ID(可选,TTS 播报与识别兜底) |
+| `ALIYUN_KEY` / `ALIYUN_WS_ID` |  工作空间 ID(可选,TTS 播报与识别兜底) |
 
-API 地址与模型名(`glm-5.3-flash`)均可在页面 ✦ 菜单中随时修改,便于切换服务商。
+API 地址与模型名均可在页面 ✦ 菜单中随时修改,便于切换服务商。
 
 ## 🐳 Docker 部署
 
@@ -121,11 +121,7 @@ docker compose up -d --build
 └── mingrate/                # 实验性子项目(玩法设计、早期塔罗原型)
 ```
 
-## 🔒 安全提示
 
-- `.env.local` 已被 `.gitignore` 忽略,**切勿**将 API Key 提交到公开仓库。
-- 前端直填的 Key 保存在浏览器 localStorage,仅在本机生效;公开部署时请谨慎预填 `VITE_ZHIPU_API_KEY`。
-- 若 Key 意外泄露,请立即到智谱开放平台重置。
 
 ## 📄 许可证
 
