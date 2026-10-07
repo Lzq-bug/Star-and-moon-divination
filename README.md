@@ -1,6 +1,6 @@
 # 星月占卜 · Star & Moon Divination
 
-> 基于智谱 GLM 大模型 Agent 的 AI 塔罗占卜 Web 应用——一位温柔而睿智的 AI 占卜师「星语」,陪你完成一场有仪式感的塔罗旅程。
+> 基于大模型 Agent 的 AI 塔罗占卜 Web 应用——一位温柔而睿智的 AI 占卜师「星语」,陪你完成一场有仪式感的塔罗旅程。
 
 ![主界面](public/crystal-sanctum.png)
 
